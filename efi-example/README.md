@@ -1,22 +1,21 @@
-# Install GNU EFI environment in 6 easy steps
+# Install GNU EFI environment in 5 easy steps
 
 ## Summary of the steps
 
 After cloning the gnu-efi git, the following steps are required!
 
-	[1] .../gnu-efi$ cd efi-example
-	[2] .../gnu-efi/efi-example$ tar -xjvf gnu-efi-3.0.17.tar.bz2
-	[3] .../gnu-efi/efi-example$ cd gnu-efi-3.0.17
+	[1] ./gnu-efi$ tar -xjvf gnu-efi-3.0.17.tar.bz2
+	[2] ./gnu-efi$ cd gnu-efi-3.0.17
 	### Make the UEFI compatible/linkable environment
-	[4] .../gnu-efi/efi-example/gnu-efi-3.0.17$ make
+	[3] ./gnu-efi/gnu-efi-3.0.17$ make
 	### Then get back to gnu-efi/efi-example directory
-	[5] .../gnu-efi/efi-example/gnu-efi-3.0.17$ cd ..
+	[4] ./gnu-efi/gnu-efi-3.0.17$ cd ..
 	### Make .efi executable
-	[6] .../gnu-efi/efi-example/gnu-efi-3.0.17$ make
+	[5] ./gnu-efi/gnu-efi-3.0.17$ make
 
 THAT'S IT, FOLKS!
 
-All this is outlined in the script: .../gnu-efi/install.sh
+All this is outlined in the script: ./gnu-efi/install.sh
 
 Further down, just some more detailed instructions.
 
@@ -42,78 +41,58 @@ Download and compile Nigel Croxon’s gnu-efi library:
 	### From the browser to ~/Downlosd/
 	https://sourceforge.net/projects/gnu-efi/files/latest/download
 
-	~$ cp ~/Downloads/gnu-efi-3.0.17.tar.bz2 .../gnu-efi/efi-example
+	~$ cp ~/Downloads/gnu-efi-3.0.17.tar.bz2 ./gnu-efi
 
 	### Untar the Nigel Croxon’s gnu-efi library
-	.../gnu-efi/efi-example$ tar -xjvf gnu-efi-3.0.17.tar.bz2
+	./gnu-efi$ tar -xjvf gnu-efi-3.0.17.tar.bz2
 
-	.../gnu-efi/efi-example$ cd gnu-efi-3.0.17
+	./gnu-efi$ cd gnu-efi-3.0.17
 
 	### Make the UEFI compliable/linkable environment
-	.../gnu-efi/efi-example/gnu-efi-3.0.17$ make
+	./gnu-efi/gnu-efi-3.0.17$ make
 
 	### Then get back to ap directory
-	.../gnu-efi/efi-example/gnu-efi-3.0.17$ cd ..
-
-	.../gnu-efi/efi-example$ ls -al
-	total 192
-	drwxr-xr-x. 3 vuser vusers   4096 Mar  8 17:22 .
-	drwxr-xr-x. 4 vuser vusers   4096 Mar  8 16:52 ..
-	drwxr-xr-x. 7 vuser vusers   4096 Mar  8 17:22 gnu-efi-3.0.17
-	-rw-r--r--. 1 vuser vusers 165568 Mar  8 16:53 gnu-efi-3.0.17.tar.bz2
-	-rw-r--r--. 1 vuser vusers   4167 Mar  8 16:57 listacpi.c
-	-rw-r--r--. 1 vuser vusers   1217 Mar  8 16:56 Makefile
-	-rw-r--r--. 1 vuser vusers   1987 Mar  8 17:33 README.md
+	./gnu-efi/gnu-efi-3.0.17$ cd ..
 
 ### Headers using the minimal headers in from gnu-efi-3.0.17/ inc/
 
-	.../gnu-efi/gnu-efi-3.0.17/inc
+	./gnu-efi/gnu-efi-3.0.17/inc
 
 ### Creating an EFI executable
 
 Please, execute makefile as:
 
-	.../gnu-efi/efi-example/gnu-efi-3.0.17$ make clean
-	.../gnu-efi/efi-example/gnu-efi-3.0.17$ make
-
-For me, according to the mockup absolute paths Makefile (NOT one
-TRUE relative paths Makefile I am using, this is just Makefile
-on sticks and ropes/on apparatuses):
-
-	gcc -I /home/vuser/projects/github/gnu-uefi/gnu-efi-3.0.17/inc \
-	-ffreestanding -fno-stack-protector -fno-stack-check -fshort-wchar \
-	-fPIC -mno-red-zone -maccumulate-outgoing-args -c listacpi.c -o listacpi.o
-	ld.bfd -shared -Bsymbolic -L/home/vuser/projects/github/gnu-uefi/gnu-efi-3.0.17/x86_64/lib \
-	-L/home/vuser/projects/github/gnu-uefi/gnu-efi-3.0.17/x86_64/gnuefi \
-	-T/home/vuser/projects/github/gnu-uefi/gnu-efi-3.0.17/gnuefi/elf_x86_64_efi.lds \
-	/home/vuser/projects/github/gnu-uefi/gnu-efi-3.0.17/x86_64/gnuefi/crt0-efi-x86_64.o \
-	listacpi.o -o listacpi.so -lgnuefi -lefi
-	objcopy -j .text -j .sdata -j .data -j .rodata -j .dynamic -j .dynsym  -j .rel -j .rela -j \
-	.rel.* -j .rela.* -j .reloc --target efi-app-x86_64 --subsystem=10 listacpi.so listacpi.efi
-	rm listacpi.o listacpi.so
+	./gnu-efi/gnu-efi-3.0.17$ make clean
+	./gnu-efi/gnu-efi-3.0.17$ make
 
 ### After creating an EFI executable
 
-You will find listacpi.elf in the ./
+You will find listacpi.elf in the ./gnu-efi :
 
-	~/projects/github/gnu-efi/efi-example$ ls -al
-	total 244
-	drwxr-xr-x. 3 vuser vusers   4096 Mar  8 17:36 .
-	drwxr-xr-x. 4 vuser vusers   4096 Mar  8 16:52 ..
-	drwxr-xr-x. 7 vuser vusers   4096 Mar  8 17:22 gnu-efi-3.0.17
-	-rw-r--r--. 1 vuser vusers 165568 Mar  8 16:53 gnu-efi-3.0.17.tar.bz2
-	-rw-r--r--. 1 vuser vusers   4167 Mar  8 16:57 listacpi.c
-	-rwxr-xr-x. 1 vuser vusers  50380 Mar  8 17:36 listacpi.efi	<<===== .efi exe
-	-rw-r--r--. 1 vuser vusers   1217 Mar  8 16:56 Makefile		<<===== mockup Makefile
-	-rw-r--r--. 1 vuser vusers   2455 Mar  8 17:35 README.md
+	./gnu-efi$ ls -al
+	total 424
+	drwxr-xr-x.  4 vuser vusers   4096 Mar 10 15:08 .
+	drwxr-xr-x. 56 vuser vusers   4096 Mar 10 14:26 ..
+	-rw-r--r--.  1 vuser vusers   5161 Mar  8 12:24 arm_dts_vs_intel_acpi.md
+	-rw-r--r--.  1 vuser vusers 208724 Mar  8 12:24 Boot_Phases.jpg
+	drwxr-xr-x.  2 vuser vusers   4096 Mar 10 15:08 efi-example
+	drwxr-xr-x.  8 vuser vusers   4096 Mar 10 16:15 .git
+	-rw-r--r--.  1 vuser vusers    430 Mar  8 12:24 .gitignore
+	-rw-r--r--.  1 vuser vusers 165568 Mar  8 13:19 gnu-efi-3.0.17.tar.bz2
+	-rwxr-xr-x.  1 vuser vusers   1082 Mar 10 15:08 install.sh
+	-rw-r--r--.  1 vuser vusers   1076 Mar  8 12:24 LICENSE
+	-rw-r--r--.  1 vuser vusers   4167 Mar 10 14:18 listacpi.c
+	-rwxr-xr-x.  1 vuser vusers  50380 Mar 10 14:26 listacpi.efi	<<===== .efi exe
+	-rw-r--r--.  1 vuser vusers    877 Mar 10 14:44 Makefile	<<===== mockup Makefile
+	-rw-r--r--.  1 vuser vusers   7031 Mar 10 16:27 README.md
 
-Please, do not forget to use sudo (to be root as following
-these instructions).
+Please, do not forget to use sudo (to be root as following these
+instructions).
 
-Please, copy listacpi.elf to the /dev/sda2 (which supposed
-to be mounted on /boot/efi/).
+Please, copy listacpi.elf to the /dev/sda2 (which supposed to be
+mounted on /boot/efi/).
 
-	.../gnu-efi/efi-example/gnu-efi-3.0.17$ sudo cp ./listacpi.elf /boot/efi/EFI
+	./gnu-efi$ sudo cp ./listacpi.elf /boot/efi/EFI
 
 ### Reboot the PC
 
@@ -153,17 +132,6 @@ To use the original Chapter [2.31] relative paths Makefile using
 host /usr/include/efi/ headers for the creation of the [2.33]
 relative paths Makefile using the minimal headers from GNU
 EFI inc/ .
-
-	~/projects/github/gnu-efi/efi-example$ ls -al
-	total 244
-	drwxr-xr-x. 3 vuser vusers   4096 Mar  8 17:36 .
-	drwxr-xr-x. 4 vuser vusers   4096 Mar  8 16:52 ..
-	drwxr-xr-x. 7 vuser vusers   4096 Mar  8 17:22 gnu-efi-3.0.17
-	-rw-r--r--. 1 vuser vusers 165568 Mar  8 16:53 gnu-efi-3.0.17.tar.bz2
-	-rw-r--r--. 1 vuser vusers   4167 Mar  8 16:57 listacpi.c
-	-rwxr-xr-x. 1 vuser vusers  50380 Mar  8 17:36 listacpi.efi	<<===== .efi exe
-=====>>	-rw-r--r--. 1 vuser vusers   1217 Mar  8 16:56 Makefile	<<===== [2.33] relative paths Makefile
-	-rw-r--r--. 1 vuser vusers   2455 Mar  8 17:35 README.md
 
 Happy efi shell-ing!
 
